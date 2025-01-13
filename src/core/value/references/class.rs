@@ -35,8 +35,8 @@ impl Class {
     pub fn new(properties: Vec<Property>, methods: Vec<(String, Function)>) -> Self {
         // get properties' and methods' names into one `Vec`
         let mut prop_name_vec = vec![];
-        for Property(_, identi) in &properties {
-            prop_name_vec.push(identi.as_str())
+        for Property(_, id) in &properties {
+            prop_name_vec.push(id.as_str())
         }
         for (k, _) in &methods {
             prop_name_vec.push(k.as_str());

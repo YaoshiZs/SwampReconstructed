@@ -114,7 +114,7 @@ pub enum Value {
 
     Function(Function),
     Class(Rc<Class>),
-    Object(Rc<RefCell<Object>>),
+    Object(Rc<RefCell<object::Object>>),
 }
 
 impl Value {
@@ -406,8 +406,8 @@ impl From<Class> for Value {
         Self::Class(Rc::new(value))
     }
 }
-impl From<Object> for Value {
-    fn from(value: Object) -> Self {
+impl From<object::Object> for Value {
+    fn from(value: object::Object) -> Self {
         Object(into_rc_refcell(value))
     }
 }

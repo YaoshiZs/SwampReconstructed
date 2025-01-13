@@ -251,7 +251,7 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
             ' ' | '\t' => {}
 
             // comment symbol: # (Number Sign)
-            // when encount comment symbol,
+            // when count comment symbol,
             // stop resolving current line.
             '#' => break,
             _ => {
