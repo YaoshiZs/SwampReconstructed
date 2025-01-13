@@ -4,5 +4,5 @@ pub fn is_id_ascii(ch: char) -> bool {
 // '1' -> 1
 pub fn ascii_to_num(ch: char) -> i64 {
     const NUM_ASCII_START: u8 = 48;
-    return ((ch as u8) - NUM_ASCII_START) as i64;
+    ((ch as u8) - NUM_ASCII_START) as i64
 }

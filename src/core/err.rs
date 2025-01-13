@@ -4,6 +4,7 @@ use std::fs::{File, OpenOptions};
 use std::io;
 use std::io::Write;
 use crossterm::style::{StyledContent, Stylize};
+use crate::core::value::value::ValueType;
 use crate::utils::terminal::Terminal;
 
 type ErrorResult = Result<(), ()>;
@@ -11,6 +12,31 @@ fn error_name_output(name: &str) -> StyledContent<&str> {
     name.white().on_red().bold()
 }
 
+const TYPE_ERROR_NAME: &'static str = " TypeError ";
+pub fn type_error(param: Option<&str>, expected: Vec<ValueType>, found: ValueType) -> ErrorResult {
+    // Vec<ValueType> -> "{type}/{type} ..."
+    fn join(mut type_vec: Vec<ValueType>) -> String {
+        let mut res_string = String::new();
+        loop {
+            let current = type_vec.remove(0);
+            res_string.extend(current.to_string().chars());
+
+            if type_vec.len() != 0 {
+                res_string.push('/');
+            } else {
+                break;
+            }
+        }
+        return res_string;
+    }
+
+    print!("{}", error_name_output(TYPE_ERROR_NAME));
+    if let Some(name) = param {
+        print!(" for \"{}\"", name);
+    }
+    print_line(format!(": expected {}, found {}.", join(expected), found));
+    return Err(());
+}
 const MATH_ERROR_NAME: &'static str = " MathError ";
 pub fn math_error(msg: &str) -> ErrorResult {
     print_line(format!("{}: {}.", error_name_output(MATH_ERROR_NAME), msg));

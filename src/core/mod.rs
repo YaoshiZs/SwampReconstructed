@@ -1,9 +1,9 @@
-use std::fmt;
+use ::std::fmt;
 use crate::core::err::{internal_error, InternalComponent};
 
 pub mod err;
 pub mod value;
-
+mod std;
 
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum Symbols {
@@ -42,7 +42,7 @@ impl Symbols {
         //    equal_symbol.combine(Symbols::Plus);
         //    -> Symbols::PlusEqual
 
-        // only `Symbole::Equal` can call the internal function `Symbols::combine`
+        // only `Symbols::Equal` can call the internal function `Symbols::combine`
         if *self != Self::Equal {
             return Err(internal_error(
                 InternalComponent::InternalFn,
@@ -152,3 +152,8 @@ impl fmt::Display for Symbols {
         }
     }
 }
+
+pub struct Scope{
+
+}
+

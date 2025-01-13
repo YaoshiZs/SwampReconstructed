@@ -2,6 +2,7 @@ use std::collections::VecDeque;
 use std::fmt;
 use crate::core::Symbols;
 use crate::core::value::number::Number;
+use crate::core::value::value::ValueType;
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum TokenType {
@@ -29,7 +30,7 @@ pub enum Token {
     Keyword(Keyword),
 
     Divider(Divider),
-//    Annotation(ValueType),
+    Annotation(ValueType),
 }
 pub type TokenVec = VecDeque<Token>;
 
@@ -43,7 +44,7 @@ impl fmt::Display for Token {
             Self::Id(ide) => format!("Identifier: {}", ide),
             Self::Keyword(key) => format!("Keywords: {}", key),
             Self::Divider(div) => format!("Divider: {:?}", div),
-//            Self::Annotation(type__) => format!("Annotation: {}", type__),
+            Self::Annotation(type__) => format!("Annotation: {}", type__),
         };
         write!(f, "Token({})", token_content_display)
     }

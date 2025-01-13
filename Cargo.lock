@@ -9,6 +9,7 @@ dependencies = [
  "crossterm",
  "hyper",
  "lazy_static",
+ "log",
  "mio",
  "tokio",
  "tokio-tungstenite",

@@ -12,6 +12,7 @@ use crate::compilers::tokenizer::token::{Divider, Keyword, Paren};
 use crate::core::err::{assignment_error, syntax_error};
 use crate::core::Symbols;
 use crate::core::value::number::Number;
+use crate::core::value::value::ValueType;
 
 fn number_resolver(chars: &mut Chars, first_ch: char, index: &mut usize) -> (char, Number) {
     enum State {
@@ -115,17 +116,18 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
             let value: String;
             (cached_ch, value) = id_resolver(&mut chars, ch, &mut index);
 
-            if false {
-            //     // Type annotation
-            //     match ValueType::is_valid_type(&value) {
-            //         Some(type__) => {
-            //             last_type = TokenType::Annotation;
-            //             tokens.push_back(Token::Annotation(type__));
-            //         }
-            //         None => {
-            //             let msg = format!("Invalid type '{}'", value);
-            //             return Err(syntax_error(&msg)?);
-            //         }
+            if last_type == TokenType::Annotation {
+                // Type annotation
+                match ValueType::is_valid_type(&value) {
+                    Some(type__) => {
+                        last_type = TokenType::Annotation;
+                        tokens.push_back(Token::Annotation(type__));
+                    }
+                    None => {
+                        let msg = format!("Invalid type '{}'", value);
+                        return Err(syntax_error(&msg)?);
+                    }
+                }
             } else {
                 // check is keyword
                 match Keyword::is_keyword(&value) {
@@ -260,3 +262,4 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
     }
     Ok(tokens)
 }
+
