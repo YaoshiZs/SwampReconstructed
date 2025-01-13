@@ -4,16 +4,14 @@ mod ascii;
 
 use std::str::Chars;
 
-use crate::compiler::tokenizer::char_converter::char_converter;
-use crate::public::compile_time::dividers::Divider;
-use crate::public::compile_time::keywords::Keyword;
-use crate::public::compile_time::parens::Paren;
-use crate::public::error::{assignment_error, syntax_error};
-use crate::public::value::symbols::Symbols;
-use crate::public::value::{number::Number, value::ValueType};
-use crate::utils::ascii::{ascii_to_num, is_identi_ascii};
 
 use token::{Token, TokenType, TokenVec};
+use crate::compilers::tokenizer::ascii::{ascii_to_num, is_id_ascii};
+use crate::compilers::tokenizer::char_converter::char_converter;
+use crate::compilers::tokenizer::token::{Divider, Keyword, Paren};
+use crate::core::err::{assignment_error, syntax_error};
+use crate::core::Symbols;
+use crate::core::value::number::Number;
 
 fn number_resolver(chars: &mut Chars, first_ch: char, index: &mut usize) -> (char, Number) {
     enum State {
@@ -52,24 +50,24 @@ fn number_resolver(chars: &mut Chars, first_ch: char, index: &mut usize) -> (cha
         cached_ch = ch;
         break;
     }
-    return (cached_ch, value);
+    (cached_ch, value)
 }
 
-fn identi_resolver(chars: &mut Chars, first_ch: char, index: &mut usize) -> (char, String) {
+fn id_resolver(chars: &mut Chars, first_ch: char, index: &mut usize) -> (char, String) {
     let mut value = String::from(first_ch);
     let mut cached_ch = '\0';
 
     while let Some(ch) = chars.next() {
         *index += 1;
 
-        if is_identi_ascii(ch) || ch.is_ascii_digit() {
+        if is_id_ascii(ch) || ch.is_ascii_digit() {
             value.push(ch);
         } else {
             cached_ch = ch;
             break;
         }
     }
-    return (cached_ch, value);
+    (cached_ch, value)
 }
 
 pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
@@ -113,22 +111,21 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
             continue;
         }
         // Identifier
-        if is_identi_ascii(ch) {
+        if is_id_ascii(ch) {
             let value: String;
-            (cached_ch, value) = identi_resolver(&mut chars, ch, &mut index);
+            (cached_ch, value) = id_resolver(&mut chars, ch, &mut index);
 
-            if last_type == TokenType::Annotation {
-                // Type annotation
-                match ValueType::is_valid_type(&value) {
-                    Some(type__) => {
-                        last_type = TokenType::Annotation;
-                        tokens.push_back(Token::Annotation(type__));
-                    }
-                    None => {
-                        let msg = format!("Invalid type '{}'", value);
-                        return Err(syntax_error(&msg)?);
-                    }
-                }
+            if false {
+            //     // Type annotation
+            //     match ValueType::is_valid_type(&value) {
+            //         Some(type__) => {
+            //             last_type = TokenType::Annotation;
+            //             tokens.push_back(Token::Annotation(type__));
+            //         }
+            //         None => {
+            //             let msg = format!("Invalid type '{}'", value);
+            //             return Err(syntax_error(&msg)?);
+            //         }
             } else {
                 // check is keyword
                 match Keyword::is_keyword(&value) {
@@ -138,7 +135,7 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
                     }
                     None => {
                         last_type = TokenType::Identifier;
-                        tokens.push_back(Token::Identi(value));
+                        tokens.push_back(Token::Id(value));
                     }
                 }
             }
@@ -219,9 +216,7 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
                         if is_escape_char {
                             is_escape_char = false;
                             ch = char_converter(ch)?;
-                        } else
-                        // when meet '\'
-                        if ch == '\\' {
+                        } else if ch == '\\' {
                             is_escape_char = true;
                             continue;
                         }
@@ -263,5 +258,5 @@ pub fn tokenize(source: &String) -> Result<TokenVec, ()> {
             }
         }
     }
-    return Ok(tokens);
+    Ok(tokens)
 }
