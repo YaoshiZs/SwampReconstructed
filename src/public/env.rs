@@ -1,0 +1,51 @@
+use std::collections::VecDeque;
+
+use crate::exec::args::commands;
+
+pub struct EnvOption {
+    pub timer: bool,
+    pub is_repl: bool,
+    pub support_ansi: bool,
+}
+
+pub static mut ENV_OPTION: EnvOption = EnvOption {
+    timer: false,
+    is_repl: false,
+    support_ansi: false,
+};
+
+// --- --- --- --- --- ---
+
+pub struct Env {
+    pub self_name: String,
+    pub version: &'static str,
+
+    pub script_path: Option<String>,
+    pub headfiles: VecDeque<String>,
+}
+
+impl Env {
+    pub fn init(self_name: String) -> Self {
+        Self {
+            self_name,
+            version: env!("CARGO_PKG_VERSION"),
+
+            script_path: None,
+            headfiles: VecDeque::<String>::new(),
+        }
+    }
+
+    pub fn version_output(&self) {
+        println!("Calculator.rs version {}", self.version);
+    }
+
+    pub fn help_output(&self) {
+        println!("Usage: calculator [SCRIPT_PATH] [OPTIONS]\n");
+
+        println!("Options:");
+        for i in 0..commands::COMMAND_COUNT {
+            println!("{}, {}", commands::COMMANDS[i][0], commands::COMMANDS[i][1]);
+            println!("  {}", commands::COMMAND_DESCRIPTIONS[i]);
+        }
+    }
+}
