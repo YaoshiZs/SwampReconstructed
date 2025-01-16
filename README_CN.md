@@ -1,0 +1,142 @@
+# Swamp （一个Calculator.rs的分支版本）
+
+[English](./README.md) | 简体中文
+
+这是一个用 Rust 编写的简单命令行计算器程序。
+
+## 特性
+
+- 支持变量
+
+```text
+> a = 1
+= 1
+> a
+= 1
+```
+
+- 支持分数
+
+```text
+> f1 = fraction(1, 2)
+= (1 / 2)
+> f1 + 1
+= (3 / 2)
+```
+
+- 支持数学函数
+
+```text
+> Math.sin(1) 
+= 0.84147098
+```
+
+- 支持惰性表达式
+
+```text
+> a = 10
+= 10
+> b = 20
+= 20
+> sum = {a + b}
+= <Lazy-Expression>
+> sum()
+= 30
+> a += 1
+= 11
+> sum()
+= 31
+```
+
+- 支持注释
+
+```text
+> 1 + 1 # plus
+= 2
+```
+
+- 支持数组
+
+```text
+> arr = new Array([1, 2, 3])
+= {
+  v: [
+    1, 2, 3, 
+  ]
+  ...
+}
+> arr.push(4)
+> arr
+= {
+  v: [
+    1, 2, 3, 4,
+  ]
+  ...
+}
+```
+
+- 支持函数定义
+
+```text
+> plus1 = fn(i $Numb) {i + 1} 
+> plus1(1) 
+= 2
+```
+
+- 支持脚本执行
+
+```text
+calculator.exe script
+```
+
+- 支持面向对象编程
+
+```text
+> Person = cl {age $Numb, name $Str}
+= {
+  age: Number
+  name: String
+}
+> inst = new Person(10, "test") 
+= {
+  age: 10
+  name: "test"
+}
+```
+
+- WinAPI支持
+```text
+> msgbox("Hello, World!", "Test", MSG_OK)
+之后消息框会显示在你的屏幕上。
+> ```
+
+## 安装
+
+### Windows || GNU/Linux || MacOS (x86_64)
+
+请前往 [Releases 页面]((https://github.com/YaoshiZs/SwampReconstructed/releases)) 下载最新的可执行文件，
+
+然后直接双击运行即可。
+
+注意：不要在GNU/Linux或MacOS上使用WinAPI！
+
+对GNU/Linux和MacOS的支持正在开发中……
+
+### 其他系统和平台架构
+
+您需要安装 Rust (版本 >= 1.60)。
+
+克隆此仓库:
+
+```bash
+git clone https://github.com/YaoshiZs/SwampReconstructed
+cd SwampReconstructed
+```
+
+然后，使用 Cargo 进行编译:
+
+```bash
+cargo build --release
+```
+
+发布的可执行文件将位于: `SwampReconstructed/target/release`
