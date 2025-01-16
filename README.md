@@ -1,4 +1,4 @@
-# Swamp (A forked version of Calculator.rs
+# Swamp (A forked version of Calculator.rs)
 
 English | [简体中文](./README_CN.md)
 
@@ -103,11 +103,12 @@ calculator.exe script
   name: "test"
 }
 ```
+
 - WinAPI support
-'''text
+```text  
 > msgbox("Hello, World!", "Test", MSG_OK)
-MsgBox will show on your computer
-'''
+MsgBox will show on your computer then.
+```
 
 ## Installation
 
